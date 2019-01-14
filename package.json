@@ -1,8 +1,0 @@
-{
-    "name": "C12Atlas_BOT",
-    "version": "1.0.0",
-    "description": "A discord bot",
-    "main": "bot.js",
-    "author": "Alex",
-    "dependencies": {}
-}
