@@ -44,6 +44,21 @@ xmlhttp.onreadystatechange = function () {
     }
 };
 
+//Convierte segundos a hms
+function segToHms(segs) {
+    var minutes = 0;
+    var hours = 0;
+    if (segs >= 60) {
+        minutes = Math.floor(segs / 60);
+        segs %= 60;
+    }
+    if (minutes >= 60) {
+        hours = Math.floor(minutes / 60);
+        minutes %= 60;
+    }
+    return hours+"h "+minutes+"m "+Math.round(segs)+"s";
+}
+
 //Codigo ejecuta cuando el bot se logea
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -58,7 +73,7 @@ client.on('message', msg => {
     var msgS;
 
     //Se hace caso a comando cuando se detecta '!' en la primera posicion del string
-    if (msg.content.substring(0, 1) === '!' && msg.channel.name == 'server-list-bot') {
+    if (msg.content.substring(0, 1) === '!' && msg.channel.name == 'general') {
         msgS = msg.content.substring(1);
         if (msgS === 'list') {
             //Logear listados de jugadores
@@ -72,10 +87,10 @@ client.on('message', msg => {
                     msg.reply(nomDur);
                     nomDur = "\n";
                 }
-                if(knownPlayers.indexOf(players[i]) > -1){
-                    nomDur += "```css\n"+"Nombre: " + players[i] + "\tDuracion: " + duration[i] + "\n```";
-                }else{
-                nomDur += "```\n"+"Nombre: " + players[i] + "\tDuracion: " + duration[i] + "\n```";
+                if (knownPlayers.indexOf(players[i]) > -1) {
+                    nomDur += "```css\n" + "Nombre: " + players[i] + "\tDuracion: " + segToHms(duration[i]) + "\n```";
+                } else {
+                    nomDur += "```\n" + "Nombre: " + players[i] + "\tDuracion: " + segToHms(duration[i]) + "\n```";
                 }
             }
             msg.reply(nomDur);
@@ -89,7 +104,7 @@ client.on('message', msg => {
             msg.reply(msgAyuda);
         }
         else if (msgS === "test") {
-            
+
         }
         else {
             if (msg.member.user.id != client.user.id)
