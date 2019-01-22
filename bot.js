@@ -15,6 +15,9 @@ var playerData;
 var knownPlayers = [];
 var players = [];
 var duration = [];
+var lastPlayers = [];
+var left = [];
+var joined = [];
 
 var channel;
 
@@ -25,8 +28,45 @@ function fillKnownPlayers() {
     }
 }
 
+//Funcion por intervalos
+function showServerJoinsLefts(){
+    refreshJSON();
+    cmpPlayers();
+    var msg = "";
+
+    if(left.length > 0){
+        for(var i = 0; i < left.length; i++){
+            msg += "```\n"+left[i]+" ha abandonado el server."+"\n```";        
+        }
+    }
+    left = [];
+    if(joined.length > 0){
+        for(var i = 0; i < joined.length; i++){
+            msg += "```\n"+joined[i]+" ha entrado al server."+"\n```";        
+        }
+    }
+    joned = [];
+}
+
+//Compara los jugadores anteriores y los nuevos para sacar un array de joined y otro de left
+function cmpPlayers() {
+    for (var i = 0; i < lastPlayers.length; i++) {
+        if (players.indexOf(lastPlayers[i]) == -1){
+            left.push(lastPlayers[i]);
+        }
+    }
+    for (var i = 0; i < players.length; i++) {
+        if (lastPlayers.indexOf(players[i]) == -1){
+            joined.push(players[i]);
+        }
+    }
+}
+
 //Refresca el json de la url y lo mete en arrays
 function refreshJSON() {
+    if (typeof players !== 'undefined' && players.length > 0) {
+        lastPlayers = players.slice();
+    }
     players = [];
     duration = [];
     xmlhttp.open('GET', url, false);
@@ -56,16 +96,17 @@ function segToHms(segs) {
         hours = Math.floor(minutes / 60);
         minutes %= 60;
     }
-    return hours+"h "+minutes+"m "+Math.round(segs)+"s";
+    return hours + "h " + minutes + "m " + Math.round(segs) + "s";
 }
 
 //Codigo ejecuta cuando el bot se logea
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setActivity(`Matando Minis`);
-    channel = client.channels.find(ch => ch.name === 'bot');
+    channel = client.channels.find(ch => ch.name === 'server-list-bot');
     fillKnownPlayers();
-    //channel.send("Estoy Activo!");
+    channel.send("Estoy Activo!");
+    setInterval(showServerJoinsLefts(),60000);
 });
 
 //Codigo ejecuta cuando se escribe un mensaje
@@ -73,7 +114,7 @@ client.on('message', msg => {
     var msgS;
 
     //Se hace caso a comando cuando se detecta '!' en la primera posicion del string
-    if (msg.content.substring(0, 1) === '!' && msg.channel.name == 'general') {
+    if (msg.content.substring(0, 1) === '!' && msg.channel.name == 'server-list-bot') {
         msgS = msg.content.substring(1);
         if (msgS === 'list') {
             //Logear listados de jugadores
