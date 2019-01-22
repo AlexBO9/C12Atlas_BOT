@@ -1,4 +1,5 @@
 auth.json
 package.json
+*.log
 node_modules
 _node-
