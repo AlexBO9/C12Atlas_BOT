@@ -39,14 +39,16 @@ function showServerJoinsLefts() {
         for (var i = 0; i < left.length; i++) {
             msg += "```\n" + left[i] + " ha abandonado el server." + "\n```";
         }
+        left = [];
     }
-    left = [];
+
     if (joined.length > 0) {
         for (var i = 0; i < joined.length; i++) {
             msg += "```\n" + joined[i] + " ha entrado al server." + "\n```";
         }
+        joined = [];
     }
-    joined = [];
+
     if (msg.length > 0) {
         channel.send(msg);
     }
