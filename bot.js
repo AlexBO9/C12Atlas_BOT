@@ -29,34 +29,38 @@ function fillKnownPlayers() {
 }
 
 //Funcion por intervalos
-function showServerJoinsLefts(){
+function showServerJoinsLefts() {
     refreshJSON();
     cmpPlayers();
     var msg = "";
 
-    if(left.length > 0){
-        for(var i = 0; i < left.length; i++){
-            msg += "```\n"+left[i]+" ha abandonado el server."+"\n```";        
+    console.log("Showing if a player left or joined.");
+    if (left.length > 0) {
+        for (var i = 0; i < left.length; i++) {
+            msg += "```\n" + left[i] + " ha abandonado el server." + "\n```";
         }
     }
     left = [];
-    if(joined.length > 0){
-        for(var i = 0; i < joined.length; i++){
-            msg += "```\n"+joined[i]+" ha entrado al server."+"\n```";        
+    if (joined.length > 0) {
+        for (var i = 0; i < joined.length; i++) {
+            msg += "```\n" + joined[i] + " ha entrado al server." + "\n```";
         }
     }
-    joned = [];
+    joined = [];
+    if (msg.length > 0) {
+        channel.send(msg);
+    }
 }
 
 //Compara los jugadores anteriores y los nuevos para sacar un array de joined y otro de left
 function cmpPlayers() {
     for (var i = 0; i < lastPlayers.length; i++) {
-        if (players.indexOf(lastPlayers[i]) == -1){
+        if (players.indexOf(lastPlayers[i]) == -1) {
             left.push(lastPlayers[i]);
         }
     }
     for (var i = 0; i < players.length; i++) {
-        if (lastPlayers.indexOf(players[i]) == -1){
+        if (lastPlayers.indexOf(players[i]) == -1) {
             joined.push(players[i]);
         }
     }
@@ -106,7 +110,7 @@ client.on('ready', () => {
     channel = client.channels.find(ch => ch.name === 'server-list-bot');
     fillKnownPlayers();
     channel.send("Estoy Activo!");
-    setInterval(showServerJoinsLefts(),60000);
+    setInterval(function () { showServerJoinsLefts() }, 60000);
 });
 
 //Codigo ejecuta cuando se escribe un mensaje
