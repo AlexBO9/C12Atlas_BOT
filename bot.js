@@ -54,14 +54,16 @@ function showServerJoinsLefts() {
 
 //Compara los jugadores anteriores y los nuevos para sacar un array de joined y otro de left
 function cmpPlayers() {
-    for (var i = 0; i < lastPlayers.length; i++) {
-        if (players.indexOf(lastPlayers[i]) == -1) {
-            left.push(lastPlayers[i]);
+    if (lastPlayers.length > 0) {
+        for (var i = 0; i < lastPlayers.length; i++) {
+            if (players.indexOf(lastPlayers[i]) == -1) {
+                left.push(lastPlayers[i]);
+            }
         }
-    }
-    for (var i = 0; i < players.length; i++) {
-        if (lastPlayers.indexOf(players[i]) == -1) {
-            joined.push(players[i]);
+        for (var i = 0; i < players.length; i++) {
+            if (lastPlayers.indexOf(players[i]) == -1) {
+                joined.push(players[i]);
+            }
         }
     }
 }
