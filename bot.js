@@ -33,18 +33,27 @@ function showServerJoinsLefts() {
     refreshJSON();
     cmpPlayers();
     var msg = "";
+    var date = new Date().toLocaleString('es-ES');
 
-    console.log("Showing if a player left or joined.");
     if (left.length > 0) {
         for (var i = 0; i < left.length; i++) {
-            msg += "```\n" + left[i] + " ha abandonado el server." + "\n```";
+            if (knownPlayers.indexOf(left[i]) > -1) {
+                msg += "```css\n[" + date + "]\t" + left[i] + " ha abandonado el server." + "\n```";
+            }
+            else {
+                msg += "```\n[" + date + "]\t" + left[i] + " ha abandonado el server." + "\n```";
+            }
         }
         left = [];
     }
 
     if (joined.length > 0) {
         for (var i = 0; i < joined.length; i++) {
-            msg += "```\n" + joined[i] + " ha entrado al server." + "\n```";
+            if (knownPlayers.indexOf(joined[i]) > -1) {
+                msg += "```css\n[" + date + "]\t" + joined[i] + " ha entrado al server." + "\n```";
+            } else {
+                msg += "```\n[" + date + "]\t" + joined[i] + " ha entrado al server." + "\n```";
+            }
         }
         joined = [];
     }
