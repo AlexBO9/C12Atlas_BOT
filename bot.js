@@ -37,6 +37,10 @@ function showServerJoinsLefts() {
 
     if (left.length > 0) {
         for (var i = 0; i < left.length; i++) {
+            if (msg.length >= 1900) {
+                channel.send(msg);
+                msg = "";
+            }
             if (knownPlayers.indexOf(left[i]) > -1) {
                 msg += "```css\n[" + date + "]\t" + left[i] + " ha abandonado el server." + "\n```";
             }
@@ -49,6 +53,10 @@ function showServerJoinsLefts() {
 
     if (joined.length > 0) {
         for (var i = 0; i < joined.length; i++) {
+            if (msg.length >= 1900) {
+                channel.send(msg);
+                msg = "";
+            }
             if (knownPlayers.indexOf(joined[i]) > -1) {
                 msg += "```css\n[" + date + "]\t" + joined[i] + " ha entrado al server." + "\n```";
             } else {
