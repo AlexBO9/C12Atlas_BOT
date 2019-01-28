@@ -3,3 +3,5 @@ package.json
 *.log
 node_modules
 _node-
+.node
+.node-xmlhttprequest-sync-12744

@@ -5,7 +5,7 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const auth = require('./auth.json');
 const known = require('./known.json');
 const client = new Discord.Client();
-const url = 'https://atlas.reznok.com/eu_pvp_players.json';
+const url = 'https://atlas.hgn.hu/api/server/717/players';
 var xmlhttp = new XMLHttpRequest();
 
 //Objeto json para datos del server eu pvp
@@ -96,9 +96,9 @@ function refreshJSON() {
     duration = [];
     xmlhttp.open('GET', url, false);
     xmlhttp.send();
-    for (i in playerData.grids["41"].players) {
-        players.push(playerData.grids["41"].players[i].name);
-        duration.push(playerData.grids["41"].players[i].duration);
+    for (i in playerData) {
+        players.push(playerData[i].name);
+        duration.push(playerData[i].playtime);
     }
 }
 
@@ -131,7 +131,7 @@ client.on('ready', () => {
     channel = client.channels.find(ch => ch.name === 'server-list-bot');
     fillKnownPlayers();
     channel.send("Estoy Activo!");
-    setInterval(function () { showServerJoinsLefts() }, 60000);
+    setInterval(function () { showServerJoinsLefts() }, 30000);
 });
 
 //Codigo ejecuta cuando se escribe un mensaje
